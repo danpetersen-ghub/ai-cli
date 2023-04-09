@@ -1,12 +1,10 @@
 #!/usr/bin/env node
 
-// console.log("RUNNING!")
 import { Command } from 'commander';
-import { logBlue, logGreen } from './utils/chalk.mjs';
-import { appendToFile } from './utils/storeLogHistory.mjs'
+import { logBlue, logGreen } from './../utils/chalk.mjs';
 
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: '../.env' });
 
 import { Configuration, OpenAIApi } from "openai";
 const configuration = new Configuration({
@@ -26,6 +24,7 @@ program.command('ai')
     .action(async (prompt) => {
 
         const API_KEY = process.env.OPENAI_API_KEY;
+        console.log(API_KEY);
         const apiUrl = `https://api.openai.com/v1/completions`;
 
         const body = {
@@ -46,16 +45,10 @@ program.command('ai')
             });
 
             const data = await response.json();
-
-            const promptText = `Prompt is: ${prompt}`;
-            const responseMessage = `Chat GPT: ${data.choices[0].text}`;
-
             console.log(
-                logBlue(promptText),
-                logGreen(responseMessage)
+                logBlue(`Prompt is: ${prompt}`),
+                logGreen(`Chat GPT: ${data.choices[0].text}`)
             );
-
-            appendToFile("\n\n ## " + promptText + "\n\n" + "## " + responseMessage + "\n\n <hr>", './tmp/chatHistory.md');
 
             //debug API response
             //console.log(JSON.stringify(data))
