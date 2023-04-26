@@ -21,19 +21,25 @@ const program = new Command();
 program.version('1.0.0');
 
 program.command('ai')
-    .description("Prompt for the json placeholder API")
-    .argument('<prompt>', 'Prompt for the model text-davinci-003')
+    .description("Communicate with Chat GPT from your CLI!")
+    .argument('<prompt>', 'Prompt for the model gpt-3.5-turbo')
     .action(async (prompt) => {
 
         const API_KEY = process.env.OPENAI_API_KEY;
-        const apiUrl = `https://api.openai.com/v1/completions`;
+        const apiUrl = `https://api.openai.com/v1/chat/completions`;
 
+        // const body = {
+        //     "model": "text-davinci-003",
+        //     "prompt": prompt,
+        //     "max_tokens": 700,
+        //     "temperature": 0
+
+        // };
         const body = {
-            "model": "text-davinci-003",
-            "prompt": prompt,
-            "max_tokens": 700,
-            "temperature": 0
-        };
+            "model": "gpt-3.5-turbo",
+            "messages": [{ "role": "user", "content": prompt }]
+        }
+
 
         try {
             const response = await fetch(apiUrl, {
@@ -48,7 +54,7 @@ program.command('ai')
             const data = await response.json();
 
             const promptText = `Prompt is: ${prompt}`;
-            const responseMessage = `Chat GPT: ${data.choices[0].text}`;
+            const responseMessage = `Chat GPT: ${data.choices[0].message.content}`;
 
             console.log(
                 logBlue(promptText),
@@ -58,7 +64,7 @@ program.command('ai')
             appendToFile("\n\n ## " + promptText + "\n\n" + "## " + responseMessage + "\n\n <hr>", './tmp/chatHistory.md');
 
             //debug API response
-            //console.log(JSON.stringify(data))
+            // console.log(JSON.stringify(data))
 
         } catch (error) {
             console.log(error);
@@ -67,4 +73,4 @@ program.command('ai')
 
 program.parse();
 
-// RUN: ``` node index.mjs ai "test hello" ``` 
+// RUN: ``` node index.mjs ai "test hello" ```
