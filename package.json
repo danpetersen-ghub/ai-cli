@@ -5,7 +5,8 @@
   "main": "bin/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "ai": "node ai.mjs ai"
+    "ai": "node app.mjs ai -p",
+    "feature": " node app.mjs ai -c \"feature\" -p "
   },
   "bin": {
     "ai": "./bin/index.mjs"
