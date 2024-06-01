@@ -4,9 +4,10 @@
   "description": "",
   "main": "bin/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "ai": "node app.mjs ai -p",
-    "feature": " node app.mjs ai -c \"feature\" -p "
+    "ai": "clear && node app.mjs ai -n",
+    "message": "node app.mjs ai -p",
+    "feature": " node app.mjs ai -c \"feature\" -p ",
+    "reset": "node app.mjs ai -r"
   },
   "bin": {
     "ai": "./bin/index.mjs"
